@@ -51,6 +51,7 @@
       alert('Please enter message!');
     } else {
       addMessage(userName, messageContentInput.value);
+      messageContentInput.value = '';
     }
   }
 
