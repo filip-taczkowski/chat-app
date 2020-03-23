@@ -1,4 +1,8 @@
 {
+  const socket = io();
+
+  socket.on('message', ({ author, content }) => addMessage(author, content));
+
   const select = {
     loginForm: '#welcome-form',
     messagesSection: '#messages-section',
@@ -47,10 +51,13 @@
   function sendMessage (e) {
     e.preventDefault();
 
+    let messageContent = messageContentInput.value;
+
     if (!messageContentInput.value) {
       alert('Please enter message!');
     } else {
-      addMessage(userName, messageContentInput.value);
+      addMessage(userName, messageContent);
+      socket.emit('message', { author: userName, content: messageContent })
       messageContentInput.value = '';
     }
   }
