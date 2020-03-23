@@ -5,6 +5,13 @@ const app = express();
 
 const messages = [];
 
+const socket = io();
+
+/* Listeners */
+socket.on('message', ({ author, content }) => addMessage(author, content));
+
+/* Emiters */
+
 app.use(express.static(path.join(__dirname + '/client')));
 
 app.get('*', (req, res) => {
