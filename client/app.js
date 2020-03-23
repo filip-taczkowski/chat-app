@@ -2,6 +2,8 @@
   const socket = io();
 
   socket.on('message', ({ author, content }) => addMessage(author, content));
+  socket.on('userJoin', (user) => addMessage('Chat Bot', `${user} has joined the converstaion!`));
+  socket.on('userLeft', (user) => addMessage('Chat Bot', `${user} has left the converstation... :(`));
 
   const select = {
     loginForm: '#welcome-form',
@@ -31,6 +33,7 @@
       userName = userNameInput.value;
       loginForm.classList.remove('show');
       messagesSection.classList.add('show');
+      socket.emit('join', userName);
     }
   }
 
@@ -38,6 +41,7 @@
     const message = document.createElement('li');
     message.classList.add('message');
     message.classList.add('message--received');
+    if(author === 'Chat Bot') message.classList.add('chat--bot');
     if(author === userName) message.classList.add('message--self');
     message.innerHTML = `
       <h3 class="message__author">${userName === author ? 'You' : author }</h3>
